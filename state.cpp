@@ -1,6 +1,6 @@
 #include "state.h"
 
-void State::setTransition(char ch, State *state){
+void State::setTransition(char ch, int state){
     transition[ch] = state;
 }
 
@@ -13,15 +13,15 @@ void State::clear(){
     final = false;
 }
 
-State* State::getTransition(char ch) const
+int State::getTransition(char ch) const
 {
     auto it = transition.find(ch);
-    return (it == transition.end()) ? nullptr : it->second;
+    return (it == transition.end()) ? -1 : it->second;
 }
 
 bool State::hasTransition(char ch) const
 {
-    return getTransition(ch) != nullptr;
+    return getTransition(ch) != -1;
 }
 
 std::string State::getKey() const
@@ -37,7 +37,7 @@ std::string State::getKey() const
     return key;
 }
 
-const std::map<char, State *> &State::getTransitions() const
+const std::map<char, int> &State::getTransitions() const
 {
     return transition;
 }

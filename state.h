@@ -14,6 +14,16 @@ public:
                 return (s1.final) ? 1 : -1;
             }
 
+            size_t size_s1 = s1.transition.size();
+            size_t size_s2 = s2.transition.size();
+
+            if (size_s1 == 0 && size_s2 == 0) {
+                return true;
+            }
+            else if (size_s1 != size_s2) {
+                return  (size_s1 > size_s2) ? 1 : -1;
+            }
+
             auto iter_1 = s1.transition.cbegin(), iter_2 = s2.transition.cbegin();
             auto end_1 = s1.transition.cend(), end_2 = s2.transition.cend();
 
@@ -21,7 +31,7 @@ public:
                 if (iter_1->first != iter_2->first) {
                     return (iter_1->first > iter_2->first) ? 1 : -1;
                 }
-                else if (iter_1->first != iter_2->first) {
+                else if (iter_1->second != iter_2->second) {
                     return (iter_1->second > iter_2->second) ? 1 : -1;
                 }
             }
@@ -30,38 +40,20 @@ public:
         }
     };
 
-    struct PtrCompare {
-        int operator()(State *s1_ptr, State *s2_ptr) {
-
-            if (!s1_ptr && !s2_ptr){
-                return 0;
-            }
-            else if (!s1_ptr ^ !s2_ptr){
-                return s1_ptr ? 1 : -1;
-            }
-
-            const State &s1 = *s1_ptr;
-            const State &s2 = *s2_ptr;
-
-            return Compare()(s1, s2);
-
-        }
-    };
-
 public:
-    void setTransition(char ch, State *state);
+    void setTransition(char ch, int state);
     void setFinal(bool final);
     void clear();
-    State* getTransition(char ch) const;
+    int getTransition(char ch) const;
     bool hasTransition(char ch) const;
     std::string getKey() const;
-    const std::map<char, State *> &getTransitions() const;
+    const std::map<char, int> &getTransitions() const;
     bool ifFinal() const;
 
     bool operator ==(const State &state) const;
 
 private:
-    std::map<char, State*> transition;
+    std::map<char, int> transition;
     bool final;
 
 
