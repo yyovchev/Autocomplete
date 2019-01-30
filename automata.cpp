@@ -31,15 +31,17 @@ Automata::Automata(const std::vector<std::string> wordsDictionary)
         }
 
         for (size_t i = prefixLenghtPlusOne ; i <= currentWord.length() ; ++i) {
-            if (previousWord.length() == prefixLenghtPlusOne && i == prefixLenghtPlusOne){
+//            if (previousWord.length() == prefixLenghtPlusOne && i == prefixLenghtPlusOne){
 
-                bool isFinalState = tempStates[i].ifFinal();
-                tempStates[i].clear();
-                tempStates[i].setFinal(isFinalState);
-            }
-            else {
-                tempStates[i].clear();
-            }
+//                bool isFinalState = tempStates[i].ifFinal();
+//                tempStates[i].clear();
+//                tempStates[i].setFinal(isFinalState);
+//            }
+//            else {
+//                tempStates[i].clear();
+//            }
+
+            tempStates[i].clear();
 
             tempStates[i-1].setTransition(currentWord[i-1], -1);
         }
@@ -64,18 +66,16 @@ Automata::Automata(const std::vector<std::string> wordsDictionary)
 
 void Automata::print()
 {
-    std::cout<< "start from : " << initialState << std::endl;
 
+//    for (size_t i = 0; i < states.size(); i++) {
+//        std::cout << i<<" "<< states[i].ifFinal() << " -> ";
+//        for (auto &it : states[i].getTransitions()) {
+//            std::cout << (it.first) <<"("<< it.second << ") "<<", ";
+//        }
+//        std::cout << std::endl;
+//    }
 
-    for (size_t i = 0; i < states.size(); i++) {
-        std::cout << i<<" "<< states[i].ifFinal() << " -> ";
-        for (auto &it : states[i].getTransitions()) {
-            std::cout << (it.first) <<"("<< it.second << ") "<<", ";
-        }
-        std::cout << std::endl;
-    }
-
-    std::cout<<"\n\n";
+//    std::cout<<"\n\n";
 
     std::string word = "";
     int br = 0;
@@ -88,14 +88,14 @@ void Automata::print()
         r+=b;
     }
 
-    std::cout << "word count : " <<br << " reachable  " <<r <<std::endl ;
+    std::cout << "total words in automata : " <<br << "\nreachable states " << r+1 <<" \\ "<<states.size()<<std::endl ;
 }
 
 void Automata::printw(State *root, std::string word, int &br, std::vector<bool> &reachable)
 {
     if (root->ifFinal()){
         ++br;
-        std::cout<<word <<std::endl;
+        //std::cout<<word <<std::endl;
     }
 
     for(auto it : root->getTransitions()) {
