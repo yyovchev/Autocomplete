@@ -15,13 +15,13 @@ Automata::Automata(const std::vector<std::string> wordsDictionary)
 
         currentWord = word;
 
-        size_t i = 0;
+        size_t j = 0;
 
-        while(previousWord[i] && currentWord[i] && previousWord[i] == currentWord[i] ){
-            ++i;
+        while(previousWord[j] && currentWord[j] && previousWord[j] == currentWord[j] ){
+            ++j;
         }
 
-        size_t prefixLenghtPlusOne =  i + !i;
+        size_t prefixLenghtPlusOne =  j + 1;
 
         for (size_t i = previousWord.length() ; i >= prefixLenghtPlusOne ; --i) {
 
@@ -56,6 +56,9 @@ Automata::Automata(const std::vector<std::string> wordsDictionary)
 
     initialState = findMinimized(tempStates[0]);
     start = &states[initialState];
+
+    tempStates.clear();
+    stateDictionary.clear();
 
 }
 
