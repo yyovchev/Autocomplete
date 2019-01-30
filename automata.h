@@ -21,19 +21,18 @@ private:
         }
     };
 public:
-    Automata(const std::vector<std::string> words);
+    Automata(const std::vector<std::string> wordsDictionary);
     void print();
-    void printw(State *root,std::string word);
+    void printw(State *root, std::string word, int &br, std::vector<bool> &reachable);
 
 private:
     int findMinimized(const State &state);
-    void updateLastCommanState(const std::string &word, const std::string debugword, int prefixLenght, State start, State tempstate);
 
 private:
     std::set<StatePair,Compare> stateDictionary;
     std::vector<State> states;
-
     State *start;
+    size_t initialState;
 
 };
 

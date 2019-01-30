@@ -8,27 +8,36 @@ int main ()
 {
 
     std::vector<std::string> words;
-    words.push_back("aa");
+//    words.push_back("aaa");
 //    words.push_back("aaaaa");
-//    words.push_back("aab");
-//    words.push_back("aac");
-    words.push_back("b");
-    words.push_back("ba");
-//    words.push_back("bababa");
-//    words.push_back("bc");
-//    words.push_back("cb");
-//    words.push_back("ccb");
-//    words.push_back("db");
-//    words.push_back("dab");
-//    words.push_back("ddb");
-//    words.push_back("hab");
-//    words.push_back("hob");
+//    words.push_back("baaaaa");
+//    words.push_back("bababaaa");
+//    words.push_back("cvfrs");
+    words.push_back("aaa");
+    words.push_back("aab");
+    words.push_back("baa");
+    words.push_back("bab");
+//    words.push_back("caadsddc");
+//    words.push_back("cdadsb");
+//    words.push_back("dafefwefdba");
+//    words.push_back("dbdsdsadbababa");
+//    words.push_back("fadsadsadbc");
+//    words.push_back("fsdadasdsacb");
+//    words.push_back("mafdsfsdfccb");
+//    words.push_back("mbdasdsadb");
+//    words.push_back("mvasdsadab");
+//    words.push_back("zaddsdsddb");
+//    words.push_back("zbfdsfdshab");
+//    words.push_back("zxfsdfdhob");
 
 
 
     Automata a(words);
 
     a.print();
+
+
+    std::cout<<"must be " << words.size()<<std::endl;
 
     return 0;
 }

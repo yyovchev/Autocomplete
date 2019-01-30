@@ -41,6 +41,7 @@ public:
     };
 
 public:
+    State(bool isFinal = false);
     void setTransition(char ch, int state);
     void setFinal(bool final);
     void clear();

@@ -1,5 +1,11 @@
 #include "state.h"
 
+State::State(bool isFinal)
+    : final(isFinal)
+{
+
+}
+
 void State::setTransition(char ch, int state){
     transition[ch] = state;
 }
