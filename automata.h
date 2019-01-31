@@ -27,20 +27,20 @@ public:
 
     Automata(const std::vector<std::string> wordsDictionary);
     void printInfo();
-    void setNumOfWords(size_t number);
+    void setNumOfWords(unsigned number);
     std::shared_ptr<StringList> find(const std::string &prefix) const;
 
 private:
     int findMinimized(const State &state);
-    void printw(State *root, std::string word, int &br, std::vector<bool> &reachable);
-    bool dfs(size_t state, const std::string prefix, std::shared_ptr<StringList> words) const;
+    void printw(int state, int &br, std::vector<bool> &reachable);
+    bool dfs(int state, const std::string prefix, std::shared_ptr<StringList> words) const;
 
 private:
     std::set<StatePair,Compare> stateDictionary;
     std::vector<State> states;
     State *start;
-    size_t initialState;
-    size_t numOfWords;
+    int initialState;
+    unsigned numOfWords;
 
 };
 

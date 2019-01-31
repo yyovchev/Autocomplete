@@ -17,7 +17,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_prefix_textChanged(const QString &arg1);
+    void on_prefix_textChanged();
 
 private:
     Ui::MainWindow *ui;

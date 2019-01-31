@@ -16,7 +16,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_prefix_textChanged(const QString &arg1)
+void MainWindow::on_prefix_textChanged()
 {
     ui->wordsList->clear();
     std::string pref = ui->prefix->text().toStdString();

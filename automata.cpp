@@ -56,12 +56,10 @@ Automata::Automata(const std::vector<std::string> wordsDictionary)
 
 void Automata::printInfo()
 {
-
-    std::string word = "";
     int br = 0;
     std::vector<bool> reachable;
     reachable.resize(states.size());
-    printw(start,word,br,reachable);
+    printw(initialState,br,reachable);
 
     int r = 0;
     for (bool b : reachable) {
@@ -74,6 +72,10 @@ void Automata::printInfo()
 std::shared_ptr<Automata::StringList> Automata::find(const std::string &prefix) const
 {
     std::shared_ptr<Automata::StringList> words = std::make_shared<Automata::StringList>();
+
+    if (prefix.length() == 0) {
+        return words;
+    }
 
     int state = initialState;
 
@@ -89,24 +91,25 @@ std::shared_ptr<Automata::StringList> Automata::find(const std::string &prefix) 
     return words;
 }
 
-void Automata::setNumOfWords(size_t number)
+void Automata::setNumOfWords(unsigned number)
 {
     numOfWords = number;
 }
 
-void Automata::printw(State *root, std::string word, int &br, std::vector<bool> &reachable)
+void Automata::printw(int state, int &br, std::vector<bool> &reachable)
 {
-    if (root->ifFinal()){
+    if (states[state].ifFinal()){
         ++br;
     }
 
-    for(auto it : root->getTransitions()) {
+    const std::map<char, int> &transition = states[state].getTransitions();
+    for(auto it : transition) {
         reachable[it.second] = true;
-        printw(&states[it.second], word + it.first, br,reachable);
+        printw(it.second, br,reachable);
     }
 }
 
-bool Automata::dfs(size_t state, const std::string prefix, std::shared_ptr<Automata::StringList> words) const
+bool Automata::dfs(int state, const std::string prefix, std::shared_ptr<Automata::StringList> words) const
 {
     if (states[state].ifFinal()){
         words->push_back(prefix);
