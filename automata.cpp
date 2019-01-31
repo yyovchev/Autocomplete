@@ -1,21 +1,12 @@
 #include "automata.h"
 
 #include <iostream>
-<<<<<<< HEAD
 #include <map>
-
-Automata::Automata(const std::vector<std::string> wordsDictionary)
-{
-    std::vector<State> tempStates(240);
-=======
 
 Automata::Automata(const std::vector<std::string> wordsDictionary)
     : start(nullptr)
 {
-//    states.resize(1);
     std::vector<State> tempStates(240);
-//    std::vector<State*> previousWordPath(240);
->>>>>>> 61b3a8b053adac55df9318590b195669ea10db28
     std::string previousWord = "";
     std::string currentWord = wordsDictionary[0];
 
@@ -39,18 +30,6 @@ Automata::Automata(const std::vector<std::string> wordsDictionary)
         }
 
         for (size_t i = prefixLenghtPlusOne ; i <= currentWord.length() ; ++i) {
-<<<<<<< HEAD
-=======
-//            if (previousWord.length() == prefixLenghtPlusOne && i == prefixLenghtPlusOne){
-
-//                bool isFinalState = tempStates[i].ifFinal();
-//                tempStates[i].clear();
-//                tempStates[i].setFinal(isFinalState);
-//            }
-//            else {
-//                tempStates[i].clear();
-//            }
->>>>>>> 61b3a8b053adac55df9318590b195669ea10db28
 
             tempStates[i].clear();
 
@@ -68,44 +47,21 @@ Automata::Automata(const std::vector<std::string> wordsDictionary)
     }
 
     initialState = findMinimized(tempStates[0]);
-<<<<<<< HEAD
-=======
     start = &states[initialState];
->>>>>>> 61b3a8b053adac55df9318590b195669ea10db28
 
     tempStates.clear();
     stateDictionary.clear();
 
 }
 
-<<<<<<< HEAD
 void Automata::printInfo()
 {
-
-    int br = 0;
-    std::vector<bool> reachable;
-    reachable.resize(states.size());
-    printw(initialState,br,reachable);
-=======
-void Automata::print()
-{
-
-//    for (size_t i = 0; i < states.size(); i++) {
-//        std::cout << i<<" "<< states[i].ifFinal() << " -> ";
-//        for (auto &it : states[i].getTransitions()) {
-//            std::cout << (it.first) <<"("<< it.second << ") "<<", ";
-//        }
-//        std::cout << std::endl;
-//    }
-
-//    std::cout<<"\n\n";
 
     std::string word = "";
     int br = 0;
     std::vector<bool> reachable;
     reachable.resize(states.size());
     printw(start,word,br,reachable);
->>>>>>> 61b3a8b053adac55df9318590b195669ea10db28
 
     int r = 0;
     for (bool b : reachable) {
@@ -115,14 +71,9 @@ void Automata::print()
     std::cout << "total words in automata : " <<br << "\nreachable states " << r+1 <<" \\ "<<states.size()<<std::endl ;
 }
 
-<<<<<<< HEAD
 std::shared_ptr<Automata::StringList> Automata::find(const std::string &prefix) const
 {
     std::shared_ptr<Automata::StringList> words = std::make_shared<Automata::StringList>();
-
-    if (prefix.length() == 0) {
-        return words;
-    }
 
     int state = initialState;
 
@@ -143,16 +94,15 @@ void Automata::setNumOfWords(size_t number)
     numOfWords = number;
 }
 
-void Automata::printw(size_t state, int &br, std::vector<bool> &reachable)
+void Automata::printw(State *root, std::string word, int &br, std::vector<bool> &reachable)
 {
-    if (states[state].ifFinal()){
+    if (root->ifFinal()){
         ++br;
     }
 
-    const std::map<char, int> &transition = states[state].getTransitions();
-    for(auto it : transition) {
+    for(auto it : root->getTransitions()) {
         reachable[it.second] = true;
-        printw(it.second,  br,reachable);
+        printw(&states[it.second], word + it.first, br,reachable);
     }
 }
 
@@ -175,21 +125,6 @@ bool Automata::dfs(size_t state, const std::string prefix, std::shared_ptr<Autom
     return  false;
 }
 
-=======
-void Automata::printw(State *root, std::string word, int &br, std::vector<bool> &reachable)
-{
-    if (root->ifFinal()){
-        ++br;
-        //std::cout<<word <<std::endl;
-    }
-
-    for(auto it : root->getTransitions()) {
-        reachable[it.second] = true;
-        printw(&states[it.second], word + it.first, br,reachable);
-    }
-}
-
->>>>>>> 61b3a8b053adac55df9318590b195669ea10db28
 int Automata::findMinimized(const State &state) {
 
     auto it = stateDictionary.find({state,-1});
