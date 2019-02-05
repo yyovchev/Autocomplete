@@ -4,7 +4,6 @@
 #include <map>
 
 Automata::Automata(const std::vector<std::string> wordsDictionary)
-    : start(nullptr)
 {
     std::vector<State> tempStates(240);
     std::string previousWord = "";
@@ -14,13 +13,13 @@ Automata::Automata(const std::vector<std::string> wordsDictionary)
 
         currentWord = word;
 
-        size_t j = 0;
+        size_t prefix = 0;
 
-        while(previousWord[j] && currentWord[j] && previousWord[j] == currentWord[j] ){
-            ++j;
+        while(previousWord[prefix] && currentWord[prefix] && previousWord[prefix] == currentWord[prefix] ){
+            ++prefix;
         }
 
-        size_t prefixLenghtPlusOne =  j + 1;
+        size_t prefixLenghtPlusOne =  prefix + 1;
 
         for (size_t i = previousWord.length() ; i >= prefixLenghtPlusOne ; --i) {
 
@@ -47,7 +46,6 @@ Automata::Automata(const std::vector<std::string> wordsDictionary)
     }
 
     initialState = findMinimized(tempStates[0]);
-    start = &states[initialState];
 
     tempStates.clear();
     stateDictionary.clear();
@@ -91,6 +89,31 @@ std::shared_ptr<Automata::StringList> Automata::find(const std::string &prefix) 
     return words;
 }
 
+void Automata::addWord(const std::string &word)
+{
+    if (word.length() == 0){
+        return;
+    }
+
+    int state = initialState;
+    int prevState = state;
+
+    for( char ch : word){
+        prevState = state;
+        state = states[state].getTransition(ch);
+
+        if (state == -1) {
+            states.push_back(State());
+            state = states.size() - 1;
+
+            states[prevState].setTransition(ch, state);
+        }
+    }
+
+    states[state].setFinal(true);
+
+}
+
 void Automata::setNumOfWords(unsigned number)
 {
     numOfWords = number;
@@ -102,7 +125,7 @@ void Automata::printw(int state, int &br, std::vector<bool> &reachable)
         ++br;
     }
 
-    const std::map<char, int> &transition = states[state].getTransitions();
+    const std::map<wchar_t, int> &transition = states[state].getTransitions();
     for(auto it : transition) {
         reachable[it.second] = true;
         printw(it.second, br,reachable);
@@ -118,9 +141,9 @@ bool Automata::dfs(int state, const std::string prefix, std::shared_ptr<Automata
         }
     }
 
-    const std::map<char, int> &transition = states[state].getTransitions();
+    const std::map<wchar_t, int> &transition = states[state].getTransitions();
     for(auto it : transition) {
-        if (dfs(it.second, prefix + it.first ,words)){
+        if (dfs(it.second, prefix + (char)it.first ,words)){
             return true;
         }
     }
@@ -130,13 +153,14 @@ bool Automata::dfs(int state, const std::string prefix, std::shared_ptr<Automata
 
 int Automata::findMinimized(const State &state) {
 
-    auto it = stateDictionary.find({state,-1});
+    StateDataRepresentation stateDataRep(state);
+    auto it = stateDictionary.find(stateDataRep);
 
     if (it == stateDictionary.end()) {
         states.push_back(state);
-        StatePair newPair = {state,states.size()-1};
-        stateDictionary.insert(newPair);
-        return newPair.second;
+        int newStatePosition = states.size() - 1;
+        stateDictionary.insert({stateDataRep,newStatePosition});
+        return newStatePosition;
     }
 
     return it->second;

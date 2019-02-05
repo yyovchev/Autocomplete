@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <functional>
 
 class State {
 public:
@@ -42,21 +43,45 @@ public:
 
 public:
     State(bool isFinal = false);
-    void setTransition(char ch, int state);
+    void setTransition(wchar_t ch, int state);
     void setFinal(bool final);
     void clear();
-    int getTransition(char ch) const;
-    bool hasTransition(char ch) const;
-    std::string getKey() const;
-    const std::map<char, int> &getTransitions() const;
+    int getTransition(wchar_t ch) const;
+    bool hasTransition(wchar_t ch) const;
+    std::string getTransitionsAsStrings() const;
+    const std::map<wchar_t, int> &getTransitions() const;
     bool ifFinal() const;
 
     bool operator ==(const State &state) const;
 
 private:
-    std::map<char, int> transition;
+    std::map<wchar_t, int> transition;
     bool final;
 
-
 };
+
+class StateDataRepresentation {
+public:
+    struct Comparator{
+        bool operator()(const StateDataRepresentation &s1,
+                        const StateDataRepresentation &s2){
+            if (s1.hash != s2.hash){
+                return  s1.hash < s2.hash;
+            }
+
+            return s1.statesTransitions.compare(s2.statesTransitions) > 0;
+        }
+    };
+
+public:
+    StateDataRepresentation(const State &state){
+        statesTransitions = state.getTransitionsAsStrings();
+        hash = std::hash<std::string>{}(statesTransitions);
+    }
+
+private:
+    size_t hash;
+    std::string statesTransitions;
+};
+
 #endif // STATE_H

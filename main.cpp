@@ -10,8 +10,10 @@
 #include <ctime>
 #include <memory>
 
+#include<clocale>
 
 #include "automata.h"
+
 
 
 int main(int argc, char *argv[])
@@ -20,7 +22,7 @@ int main(int argc, char *argv[])
 
     std::vector<std::string> words;
 
-    std::ifstream infile("words.txt");
+    std::ifstream infile("allwords.txt");
 
     time_t begin,end;
 
@@ -52,14 +54,15 @@ int main(int argc, char *argv[])
 
     std::cout<<"build\t-\t"<<  difftime (end,begin) <<" s. " <<std::endl;
 
-    atomata.printInfo();
 
     atomata.setNumOfWords(10);
 
+    atomata.printInfo();
+
     std::cout<<"END"<<std::endl;
 
-    MainWindow m(&atomata);
-    m.show();
+//    MainWindow m(&atomata);
+//    m.show();
 
 
     return a.exec();

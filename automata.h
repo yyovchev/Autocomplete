@@ -9,18 +9,10 @@
 #include <utility>
 #include <memory>
 #include <list>
+#include <map>
 
 class Automata
 {
-private:
-
-    using StatePair = std::pair<State,int>;
-
-    struct Compare{
-        bool operator()(const StatePair &p1, const StatePair &p2){
-            return State::Compare()(p1.first, p2.first) < 0;
-        }
-    };
 public:
 
     using StringList = std::list<std::string>;
@@ -29,6 +21,7 @@ public:
     void printInfo();
     void setNumOfWords(unsigned number);
     std::shared_ptr<StringList> find(const std::string &prefix) const;
+    void addWord(const std::string &word);
 
 private:
     int findMinimized(const State &state);
@@ -36,9 +29,8 @@ private:
     bool dfs(int state, const std::string prefix, std::shared_ptr<StringList> words) const;
 
 private:
-    std::set<StatePair,Compare> stateDictionary;
+    std::map<StateDataRepresentation, int , StateDataRepresentation::Comparator> stateDictionary;
     std::vector<State> states;
-    State *start;
     int initialState;
     unsigned numOfWords;
 

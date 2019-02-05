@@ -6,7 +6,7 @@ State::State(bool isFinal)
 
 }
 
-void State::setTransition(char ch, int state){
+void State::setTransition(wchar_t ch, int state){
     transition[ch] = state;
 }
 
@@ -19,18 +19,18 @@ void State::clear(){
     final = false;
 }
 
-int State::getTransition(char ch) const
+int State::getTransition(wchar_t ch) const
 {
     auto it = transition.find(ch);
     return (it == transition.end()) ? -1 : it->second;
 }
 
-bool State::hasTransition(char ch) const
+bool State::hasTransition(wchar_t ch) const
 {
     return getTransition(ch) != -1;
 }
 
-std::string State::getKey() const
+std::string State::getTransitionsAsStrings() const
 {
    std::string key;
 
@@ -38,12 +38,13 @@ std::string State::getKey() const
 
     for (auto it : transition) {
         key += it.first;
+        key += std::to_string(it.second);
     }
 
     return key;
 }
 
-const std::map<char, int> &State::getTransitions() const
+const std::map<wchar_t, int> &State::getTransitions() const
 {
     return transition;
 }
