@@ -19,6 +19,10 @@ public:
 private slots:
     void on_prefix_textChanged();
 
+    void on_numOfWords_valueChanged(int arg1);
+
+    void on_addBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
     Automata *automata;

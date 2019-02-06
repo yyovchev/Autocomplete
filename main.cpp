@@ -7,13 +7,13 @@
 #include <fstream>
 #include <algorithm>
 
-#include <ctime>
-#include <memory>
-
-#include<clocale>
-
 #include "automata.h"
 
+#define SPEED_TEST 0
+
+#if SPEED_TEST == 1
+#include <chrono>
+#endif
 
 
 int main(int argc, char *argv[])
@@ -23,10 +23,6 @@ int main(int argc, char *argv[])
     std::vector<std::string> words;
 
     std::ifstream infile("words.txt");
-
-    time_t begin,end;
-
-    time (&begin);
     std::string line;
     while (std::getline(infile, line))
     {
@@ -34,32 +30,25 @@ int main(int argc, char *argv[])
             words.push_back(line);
         }
     }
-    time(&end);
-    std::cout<<"words in dictionary : " << words.size()<<std::endl;
 
+#if SPEED_TEST == 1
+    std::cout <<"words in dictionary - "<<words.size()<<std::endl;
+    auto start = std::chrono::steady_clock::now();
+#endif
 
-    std::cout<<"reading\t-\t"<<  difftime (end,begin) <<" s. " <<std::endl;
-
-    time (&begin);
     std::sort(words.begin(),words.end());
-    time(&end);
 
-    std::cout<<"sort\t-\t"<<  difftime (end,begin) <<" s. " <<std::endl;
-
-    time (&begin);
     Automata atomata(words);
-    time(&end);
 
-    words.clear();
-
-    std::cout<<"build\t-\t"<<  difftime (end,begin) <<" s. " <<std::endl;
-
-
-    atomata.setNumOfWords(10);
+#if SPEED_TEST == 1
+    auto end = std::chrono::steady_clock::now();
+    auto diff = end - start;
+    std::cout <<"total time to build - "<< std::chrono::duration <double, std::milli> (diff).count() / 1000<< " s" << std::endl;
 
     atomata.printInfo();
+#endif
 
-    std::cout<<"END"<<std::endl;
+    words.clear();
 
     MainWindow m(&atomata);
     m.show();

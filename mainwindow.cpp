@@ -28,3 +28,14 @@ void MainWindow::on_prefix_textChanged()
     }
 }
 
+
+void MainWindow::on_numOfWords_valueChanged(int arg1)
+{
+    this->automata->setNumOfWords(arg1);
+}
+
+void MainWindow::on_addBtn_clicked()
+{
+    std::string newWord = ui->newWord->text().toStdString();
+    automata->addWord(newWord);
+}

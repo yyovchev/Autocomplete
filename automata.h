@@ -23,7 +23,7 @@ public:
 
 private:
     int findMinimized(const State &state);
-    void printw(int state, int &br, std::vector<bool> &reachable);
+    void bfs(int &br, std::vector<bool> &reachable);
     bool dfs(int state, const std::string prefix, std::shared_ptr<StringList> words) const;
 
 private:

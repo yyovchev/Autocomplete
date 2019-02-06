@@ -1,9 +1,10 @@
 #include "automata.h"
 
 #include <iostream>
-#include <map>
+#include <queue>
 
 Automata::Automata(const std::vector<std::string> wordsDictionary)
+    :numOfWords(10)
 {
     std::vector<State> tempStates(240);
     std::string previousWord = "";
@@ -57,14 +58,14 @@ void Automata::printInfo()
     int br = 0;
     std::vector<bool> reachable;
     reachable.resize(states.size());
-    printw(initialState,br,reachable);
+    bfs(br,reachable);
 
     int r = 0;
     for (bool b : reachable) {
         r+=b;
     }
 
-    std::cout << "total words in automata : " <<br << "\nreachable states " << r+1 <<" \\ "<<states.size()<<std::endl ;
+    std::cout << "total words in automata : " <<br << "\nreachable states " << r <<" \\ "<<states.size()<<std::endl ;
 }
 
 std::shared_ptr<Automata::StringList> Automata::find(const std::string &prefix) const
@@ -119,17 +120,30 @@ void Automata::setNumOfWords(unsigned number)
     numOfWords = number;
 }
 
-void Automata::printw(int state, int &br, std::vector<bool> &reachable)
+void Automata::bfs(int &br, std::vector<bool> &reachable)
 {
-    if (states[state].ifFinal()){
-        ++br;
+
+    int state = initialState;
+    std::queue<int> currunt;
+
+    currunt.push(state);
+
+    while (!currunt.empty()) {
+        reachable[currunt.front()] = true;
+
+        int front = currunt.front();
+
+        if (states[front].ifFinal()){
+            ++br;
+        }
+
+        const std::map<wchar_t, int> &transition = states[front].getTransitions();
+        for(auto it : transition) {
+            currunt.push(it.second);
+        }
+        currunt.pop();
     }
 
-    const std::map<wchar_t, int> &transition = states[state].getTransitions();
-    for(auto it : transition) {
-        reachable[it.second] = true;
-        printw(it.second, br,reachable);
-    }
 }
 
 bool Automata::dfs(int state, const std::string prefix, std::shared_ptr<Automata::StringList> words) const
