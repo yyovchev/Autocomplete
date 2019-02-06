@@ -3,13 +3,11 @@
 
 #include "state.h"
 
-#include <set>
 #include <vector>
 #include <string>
-#include <utility>
 #include <memory>
 #include <list>
-#include <map>
+#include <unordered_map>
 
 class Automata
 {
@@ -29,7 +27,7 @@ private:
     bool dfs(int state, const std::string prefix, std::shared_ptr<StringList> words) const;
 
 private:
-    std::map<StateDataRepresentation, int , StateDataRepresentation::Comparator> stateDictionary;
+    std::unordered_map<std::string, int> stateDictionary;
     std::vector<State> states;
     int initialState;
     unsigned numOfWords;

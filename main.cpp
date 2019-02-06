@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 
     std::vector<std::string> words;
 
-    std::ifstream infile("allwords.txt");
+    std::ifstream infile("words.txt");
 
     time_t begin,end;
 
@@ -61,8 +61,8 @@ int main(int argc, char *argv[])
 
     std::cout<<"END"<<std::endl;
 
-//    MainWindow m(&atomata);
-//    m.show();
+    MainWindow m(&atomata);
+    m.show();
 
 
     return a.exec();

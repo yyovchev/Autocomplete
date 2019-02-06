@@ -153,13 +153,14 @@ bool Automata::dfs(int state, const std::string prefix, std::shared_ptr<Automata
 
 int Automata::findMinimized(const State &state) {
 
-    StateDataRepresentation stateDataRep(state);
-    auto it = stateDictionary.find(stateDataRep);
+    std::string key;
+    state.getTransitionsAsStrings().swap(key);
+    auto it = stateDictionary.find(key);
 
     if (it == stateDictionary.end()) {
         states.push_back(state);
         int newStatePosition = states.size() - 1;
-        stateDictionary.insert({stateDataRep,newStatePosition});
+        stateDictionary.emplace(key,newStatePosition);
         return newStatePosition;
     }
 
